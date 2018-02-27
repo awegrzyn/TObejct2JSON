@@ -53,8 +53,6 @@ string TObject2Json::handleRequest(string request)
     return "";
   }
 
-  QcInfoLogger::GetInstance() << "Received request (" << request << ")" << infologger::endm;
-
   // Split request into command and arguments
   vector<string> parts;
   boost::split(parts, request, boost::is_any_of(" "));
@@ -82,13 +80,12 @@ void TObject2Json::start()
     if (size == -1) {
       throw std::runtime_error("Unable to receive zmq message: "s + zmq_strerror(zmq_errno()));
     }
-
     // Process message
     string request((const char*)zmq_msg_data(&messageReq), size);
     zmq_msg_close(&messageReq);
+    QcInfoLogger::GetInstance() << "Received request (" << request << ")" << infologger::endm;
     string response = handleRequest(request);
-    QcInfoLogger::GetInstance() << "Debug: ZMQ server: sending back " << response << infologger::endm;
-
+    QcInfoLogger::GetInstance() << "Response generated" << infologger::endm;
     // Send back response inside a zmq message
     zmq_msg_t messageRep;
     zmq_msg_init_size(&messageRep, response.size());
@@ -97,7 +94,6 @@ void TObject2Json::start()
     if (size == -1) {
       throw std::runtime_error("Unable to send zmq message: "s + zmq_strerror(zmq_errno()));
     }
-    QcInfoLogger::GetInstance() << "Debug: ZMQ server: sent back " << size << " bytes" << infologger::endm;
     zmq_msg_close(&messageRep);
   }
 }
