@@ -10,43 +10,38 @@
 
 ///
 /// \file   TObejct2Json.h
-/// \author Vladimir Kosmala
 /// \author Adam Wegrzynek
 ///
 
-#ifndef QUALITYCONTROL_TOBJECT2JSON_H
-#define QUALITYCONTROL_TOBJECT2JSON_H
+#ifndef QUALITYCONTROL_TOBJECT2JSON_FACTORY_H
+#define QUALITYCONTROL_TOBJECT2JSON_FACTORY_H
 
-// QualityControl
+#include "TObject2Json.h"
 #include "Backend.h"
-
-using o2::quality_control::repository::MySqlDatabase;
 
 namespace o2 {
 namespace quality_control {
 namespace tobject_to_json {
 
-/// \brief Converts ROOT objects into JSON format, readable by JSROOT
-class TObject2Json
+/// Creates and condifures TObject2Json object
+class TObject2JsonFactory
 {
   public:
-    TObject2Json(std::unique_ptr<Backend> backend, std::string zeromqUrl);
+    /// Disables copy constructor
+    TObject2JsonFactory & operator=(const TObject2JsonFactory&) = delete;
+    TObject2JsonFactory(const TObject2JsonFactory&) = delete;
 
-    /// Listens on the the ZMQ server endpoint
-    void start();
+    /// Creates an instance of TObject2Json
+    /// \return              renerence to TObject2Json object
+    static std::unique_ptr<TObject2Json> Get(std::string url, std::string zeromqUrl);
 
   private:
-    void *mZeromqSocket;
-
-    /// MySQL client instance from QualityControl framework
-    std::unique_ptr<Backend> mBackend;
-
-    // Handle ZeroMQ request
-    std::string handleRequest(std::string message);
+    /// Private constructor disallows to create instance of Factory
+    TObject2JsonFactory() = default;
 };
 
 } // namespace tobject_to_json {
 } // namespace quality_control
 } // namespace o2
 
-#endif // QUALITYCONTROL_TOBJECT2JSON_H
+#endif // QUALITYCONTROL_TOBJECT2JSON_FACTORY_H

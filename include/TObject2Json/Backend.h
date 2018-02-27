@@ -9,16 +9,16 @@
 // or submit itself to any jurisdiction.
 
 ///
-/// \file   TObejct2Json.h
+/// \file   Backend.h
 /// \author Vladimir Kosmala
 /// \author Adam Wegrzynek
 ///
 
-#ifndef QUALITYCONTROL_TOBJECT2JSON_H
-#define QUALITYCONTROL_TOBJECT2JSON_H
+#ifndef QUALITYCONTROL_TOBJECT2JSON_BACKEND_H
+#define QUALITYCONTROL_TOBJECT2JSON_BACKEND_H
 
 // QualityControl
-#include "Backend.h"
+#include "QualityControl/MySqlDatabase.h"
 
 using o2::quality_control::repository::MySqlDatabase;
 
@@ -27,26 +27,21 @@ namespace quality_control {
 namespace tobject_to_json {
 
 /// \brief Converts ROOT objects into JSON format, readable by JSROOT
-class TObject2Json
+class Backend
 {
   public:
-    TObject2Json(std::unique_ptr<Backend> backend, std::string zeromqUrl);
-
-    /// Listens on the the ZMQ server endpoint
-    void start();
-
-  private:
-    void *mZeromqSocket;
-
-    /// MySQL client instance from QualityControl framework
-    std::unique_ptr<Backend> mBackend;
-
-    // Handle ZeroMQ request
-    std::string handleRequest(std::string message);
+    /// Default constructor
+    Backend() = default;
+   
+    /// Default destructor
+    virtual ~Backend() = default;
+    
+    /// Gets TObject from database and returns the JSON equivalent
+    virtual std::string getJsonObject(std::string agentName, std::string objectName) = 0;
 };
 
-} // namespace tobject_to_json {
+} // namespace tobject_to_json
 } // namespace quality_control
 } // namespace o2
 
-#endif // QUALITYCONTROL_TOBJECT2JSON_H
+#endif // QUALITYCONTROL_TOBJECT2JSON_MYSQL_H

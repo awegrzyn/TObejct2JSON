@@ -55,9 +55,6 @@ ENDIF ()
 # Add compiler flags for warnings and (more importantly) fPIC and debug symbols
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Wextra -fPIC -pthread")
 
-add_subdirectory(doc)
-
-
 ####################################
 # Module, library and executable definition
 ####################################
@@ -75,12 +72,6 @@ configure_file("include/${MODULE_NAME}/Version.h.in"
 
 O2_GENERATE_EXECUTABLE(
         EXE_NAME "tobject2json"
-        SOURCES "src/main" "src/TObject2Json.cpp"
+        SOURCES "src/main" "src/TObject2Json.cxx" "src/Backends/MySql.cxx" "src/TObject2JsonFactory.cxx"
         BUCKET_NAME "o2_tobject2json"
-        )
-
-O2_GENERATE_EXECUTABLE(
-        EXE_NAME "test_zmq"
-        SOURCES "tests/test_zmq"
-        BUCKET_NAME "o2_test_zmq"
         )
