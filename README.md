@@ -17,7 +17,3 @@ make -j
 ~~~
 ./build/bin/tobject2json
 ~~~
-
-
-### Documentation
-* ZeroMQ http://api.zeromq.org/4-2:_start
