@@ -72,6 +72,6 @@ configure_file("include/${MODULE_NAME}/Version.h.in"
 
 O2_GENERATE_EXECUTABLE(
         EXE_NAME "tobject2json"
-        SOURCES "src/main" "src/TObject2Json.cxx" "src/Backends/MySql.cxx" "src/TObject2JsonFactory.cxx"
+        SOURCES "src/TObject2JsonServer.cxx" "src/TObject2Json.cxx" "src/TObject2JsonMySql.cxx" "src/TObject2JsonFactory.cxx"
         BUCKET_NAME "o2_tobject2json"
         )

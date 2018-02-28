@@ -13,10 +13,10 @@
 /// \author Adam Wegrzynek
 ///
 
-#include "TObject2Json/TObject2JsonFactory.h"
-#include "TObject2Json/TObject2Json.h"
-#include "Backends/MySql.h"
-#include "UriParser/UriParser.h"
+#include "TObject2JsonFactory.h"
+#include "TObject2Json.h"
+#include "TObject2JsonMySql.h"
+#include "UriParser.h"
 
 namespace o2 {
 namespace quality_control {

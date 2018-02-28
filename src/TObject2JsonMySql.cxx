@@ -14,7 +14,7 @@
 /// \author Adam Wegrzynek
 ///
 
-#include "MySql.h"
+#include "TObject2JsonMySql.h"
 // QualityControl
 #include "QualityControl/MySqlDatabase.h"
 #include "QualityControl/MonitorObject.h"

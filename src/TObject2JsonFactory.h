@@ -17,7 +17,7 @@
 #define QUALITYCONTROL_TOBJECT2JSON_FACTORY_H
 
 #include "TObject2Json.h"
-#include "Backend.h"
+#include "TObject2JsonBackend.h"
 
 namespace o2 {
 namespace quality_control {

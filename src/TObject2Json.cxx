@@ -15,8 +15,8 @@
 ///
 
 // TObject2Json
-#include "TObject2Json/TObject2Json.h"
-#include "Backends/MySql.h"
+#include "TObject2Json.h"
+#include "TObject2JsonMySql.h"
 #include "QualityControl/QcInfoLogger.h"
 
 // ZMQ

@@ -1,4 +1,4 @@
-find_package(Boost 1.58 REQUIRED)
+find_package(Boost COMPONENTS program_options REQUIRED)
 find_package(MySQL REQUIRED)
 find_package(ROOT 6.06.02 COMPONENTS RMySQL REQUIRED)
 find_package(CURL REQUIRED)
@@ -16,6 +16,7 @@ o2_define_bucket(
   o2_tobject2json
 
   DEPENDENCIES
+  ${Boost_LIBRARIES}
   ${ROOT_LIBRARIES}
   ${CURL_LIBRARIES}
   ${MYSQL_LIBRARIES}

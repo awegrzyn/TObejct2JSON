@@ -17,7 +17,7 @@
 #ifndef QUALITYCONTROL_TOBJECT2JSON_MYSQL_H
 #define QUALITYCONTROL_TOBJECT2JSON_MYSQL_H
 
-#include "TObject2Json/Backend.h"
+#include "TObject2JsonBackend.h"
 
 // QualityControl
 #include "QualityControl/MySqlDatabase.h"
