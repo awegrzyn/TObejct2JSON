@@ -30,11 +30,12 @@ class TObject2Json
 {
   public:
     TObject2Json(std::unique_ptr<Backend> backend, std::string zeromqUrl);
-
+    ~TObject2Json();
     /// Listens on the the ZMQ server endpoint
     void start();
 
   private:
+    void *mZeromqContext;
     void *mZeromqSocket;
 
     /// MySQL client instance from QualityControl framework
