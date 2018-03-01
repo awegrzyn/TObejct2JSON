@@ -37,20 +37,14 @@ namespace quality_control {
 namespace tobject_to_json {
 
 TObject2Json::TObject2Json(std::unique_ptr<Backend> backend, std::string zeromqUrl)
-  : mBackend(std::move(backend))
+  : mBackend(std::move(backend)), mZeromqContext(zmq_ctx_new()), mZeromqSocket(NULL)
 {
-  mZeromqContext = zmq_ctx_new();
   mZeromqSocket = zmq_socket(mZeromqContext, ZMQ_REP);
   int rc = zmq_bind(mZeromqSocket, zeromqUrl.c_str());
   if (rc == 0) {
     throw std::runtime_error("Couldn't bind the socket "s + zmq_strerror(zmq_errno()));
   }
   QcInfoLogger::GetInstance() << "ZeroMQ server: Socket bound " << zeromqUrl << infologger::endm;
-}
-
-TObject2Json::~TObject2Json() {
-  zmq_close(mZeromqSocket);
-  zmq_ctx_destroy(mZeromqContext);
 }
 
 string TObject2Json::handleRequest(string request)
