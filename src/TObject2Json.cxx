@@ -19,6 +19,9 @@
 #include "TObject2JsonMySql.h"
 #include "QualityControl/QcInfoLogger.h"
 
+#include <chrono>
+#include <thread>
+
 // ZMQ
 #include <zmq.h>
 
@@ -78,12 +81,15 @@ string TObject2Json::handleRequest(string request)
 void TObject2Json::start()
 {
   while(1) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
     // Wait for next request from client inside a zmq message
     zmq_msg_t messageReq;
     zmq_msg_init(&messageReq);
     int size = zmq_msg_recv(&messageReq, mZeromqSocket, 0);
     if (size == -1) {
-      throw std::runtime_error("Unable to receive zmq message: "s + zmq_strerror(zmq_errno()));
+      QcInfoLogger::GetInstance() << "Unable to read socket: " << zmq_strerror(zmq_errno()) << infologger::endm;
+      zmq_msg_close(&messageReq);
+      continue;
     }
     // Process message
     string request((const char*)zmq_msg_data(&messageReq), size);
@@ -97,7 +103,7 @@ void TObject2Json::start()
     memcpy(zmq_msg_data(&messageRep), response.data(), response.size());
     size = zmq_msg_send(&messageRep, mZeromqSocket, 0);
     if (size == -1) {
-      throw std::runtime_error("Unable to send zmq message: "s + zmq_strerror(zmq_errno()));
+      QcInfoLogger::GetInstance() << "Unable to write socket: " << zmq_strerror(zmq_errno()) << infologger::endm;
     }
     zmq_msg_close(&messageRep);
   }
