@@ -17,6 +17,7 @@
 #ifndef QUALITYCONTROL_TOBJECT2JSON_H
 #define QUALITYCONTROL_TOBJECT2JSON_H
 
+#include "zmq.hpp"
 #include "TObject2JsonBackend.h"
 
 using o2::quality_control::repository::MySqlDatabase;
@@ -37,8 +38,13 @@ class TObject2Json
     /// MySQL client instance from QualityControl framework
     std::unique_ptr<Backend> mBackend;
 
-    void *mZeromqContext;
-    void *mZeromqSocket;    
+
+    /// ZMQ contex
+    zmq::context_t mContext;
+
+    /// ZMQ socket
+    zmq::socket_t mSocket;
+
 
     // Handle ZeroMQ request
     std::string handleRequest(std::string message);
