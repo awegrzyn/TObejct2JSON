@@ -37,8 +37,11 @@ class TObject2Json
     /// MySQL client instance from QualityControl framework
     std::unique_ptr<Backend> mBackend;
 
-    void *mZeromqContext;
-    void *mZeromqSocket;    
+    /// ZeroMQ context
+    void *mContext;
+
+    /// ZeroMQ server socket
+    void *mSocket;
 
     // Handle ZeroMQ request
     std::string handleRequest(std::string message);

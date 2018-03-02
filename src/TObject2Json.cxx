@@ -37,11 +37,12 @@ namespace quality_control {
 namespace tobject_to_json {
 
 TObject2Json::TObject2Json(std::unique_ptr<Backend> backend, std::string zeromqUrl)
-  : mBackend(std::move(backend)), mZeromqContext(zmq_ctx_new()), mZeromqSocket(NULL)
+  : mBackend(std::move(backend))
 {
-  mZeromqSocket = zmq_socket(mZeromqContext, ZMQ_REP);
-  int rc = zmq_bind(mZeromqSocket, zeromqUrl.c_str());
-  if (rc == 0) {
+  mContext = zmq_ctx_new ();
+  mSocket = zmq_socket (mContext, ZMQ_REP);
+  int rc = zmq_bind (mSocket, zeromqUrl.c_str());
+  if (rc != 0) {
     throw std::runtime_error("Couldn't bind the socket "s + zmq_strerror(zmq_errno()));
   }
   QcInfoLogger::GetInstance() << "ZeroMQ server: Socket bound " << zeromqUrl << infologger::endm;
@@ -79,7 +80,7 @@ void TObject2Json::start()
     // Wait for next request from client inside a zmq message
     zmq_msg_t messageReq;
     zmq_msg_init(&messageReq);
-    int size = zmq_msg_recv(&messageReq, mZeromqSocket, 0);
+    int size = zmq_msg_recv(&messageReq, mSocket, 0);
     if (size == -1) {
       QcInfoLogger::GetInstance() << "Unable to read socket: " << zmq_strerror(zmq_errno()) << infologger::endm;
       zmq_msg_close(&messageReq);
@@ -95,7 +96,7 @@ void TObject2Json::start()
     zmq_msg_t messageRep;
     zmq_msg_init_size(&messageRep, response.size());
     memcpy(zmq_msg_data(&messageRep), response.data(), response.size());
-    size = zmq_msg_send(&messageRep, mZeromqSocket, 0);
+    size = zmq_msg_send(&messageRep, mSocket, 0);
     if (size == -1) {
       QcInfoLogger::GetInstance() << "Unable to write socket: " << zmq_strerror(zmq_errno()) << infologger::endm;
     }
